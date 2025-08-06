@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulador de Paneles</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fafafa;
+      color: #222;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+      color: #4a3f35; /* marrón oscuro */
+      margin: 0 0 20px 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #5e534a; /* marrón grisáceo */
+      display: block;
+    }
+    select, input[type=number] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      outline-offset: 2px;
+    }
+    select:focus, input[type=number]:focus {
+      border-color: #8a6d3b; /* marrón */
+      box-shadow: 0 0 6px #bba45d55;
+    }
+    button {
+      background: #8a6d3b; /* marrón */
+      color: white;
+      font-weight: 700;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 8px #7a5f2aaa;
+      transition: background-color 0.25s ease;
+    }
+    button:hover {
+      background: #a18649;
+      box-shadow: 0 6px 14px #9f8c5fbb;
+    }
+    .resultado {
+      background: #f9f7f1;
+      border: 2px solid #d7cfa9;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #4a3f35;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      body {
+        padding: 12px;
+      }
+      .container {
+        padding: 20px;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      button {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+   <label>Vista previa del panel:</label>
+<img id="imgPanel" src="img/varillado_negro.jpg" alt="Vista previa panel" style="max-width: 100%; border-radius: 10px; margin-bottom: 18px;" />
+    <h2>CALCULADORA DE PANELES</h2>
+    <h3>INGRESA TUS DATOS</h3>
+
+    <label for="tipo">Tipo de panel:</label>
+    <select id="tipo">
+      <option value="varillado">Varillado</option>
+      <option value="liso">Liso</option>
+    </select>
+
+    <label for="color">Color:</label>
+    <select id="color">
+      <option value="negro">Negro</option>
+      <option value="madera">Madera</option>
+    </select>
+
+
+
+
+    <label for="alto">Alto (m):</label>
+    <input type="number" id="alto" step="0.01" placeholder="Ej: 2.5" />
+
+    <label for="ancho">Ancho (m):</label>
+    <input type="number" id="ancho" step="0.01" placeholder="Ej: 3" />
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      const tipo = document.getElementById('tipo').value;
+      const color = document.getElementById('color').value;
+      const alto = parseFloat(document.getElementById('alto').value);
+      const ancho = parseFloat(document.getElementById('ancho').value);
+
+      if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
+        document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
+        return;
+      }
+
+      const superficie = alto * ancho;
+      const coberturaPorTira = 0.87;
+      const tirasNecesarias = Math.ceil(superficie / coberturaPorTira);
+
+      let precioPorTira = 0;
+      if (tipo === "varillado" && color === "negro") {
+        precioPorTira = 56.78;
+      } else if (tipo === "varillado" && color === "madera") {
+        precioPorTira = 63.5;
+      } else if (tipo === "liso" && color === "negro") {
+        precioPorTira = 78.5;
+      } else if (tipo === "liso" && color === "madera") {
+        precioPorTira = 81.6;
+      }
+
+      const precioTotal = tirasNecesarias * precioPorTira;
+
+      document.getElementById('resultado').innerHTML = `
+        Tipo: <strong>${tipo.toUpperCase()}</strong><br />
+        Color: <strong>${color.toUpperCase()}</strong><br />
+        Superficie total: <strong>${superficie.toFixed(2)} m²</strong><br />
+        Tiras necesarias: <strong>${tirasNecesarias}</strong><br />
+        Precio por tira: <strong>$${precioPorTira.toFixed(2)} USD</strong><br />
+        Precio total: <strong>$${precioTotal.toFixed(2)} USD</strong>
+      `;
+    }
+
+    function actualizarImagen() {
+  const tipo = document.getElementById('tipo').value;   // ej: "varillado"
+  const color = document.getElementById('color').value; // ej: "negro"
+  const img = document.getElementById('imgPanel');
+
+  // Construir el nombre de la imagen según la selección
+  const nombreImagen = `img/${tipo}_${color}.jpg`;
+
+  img.src = nombreImagen;
+  img.alt = `Panel ${tipo} color ${color}`;
+}
+
+// Ejecutar al cambiar cualquiera de los selects
+document.getElementById('tipo').addEventListener('change', actualizarImagen);
+document.getElementById('color').addEventListener('change', actualizarImagen);
+
+// También ejecutar al cargar la página para que la imagen esté sincronizada con el valor inicial
+window.addEventListener('load', actualizarImagen);
+  </script>
+</body>
+</html>
