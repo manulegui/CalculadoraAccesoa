@@ -11,8 +11,9 @@
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #fafafa;
-      color: #222;
+      background: url('img/fondo.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #f1f1f1;
       margin: 0;
       padding: 20px;
       display: flex;
@@ -20,12 +21,12 @@
       min-height: 100vh;
     }
     .container {
-      background: #fff;
+      background: rgba(0, 0, 0, 0.7);
       max-width: 480px;
       width: 100%;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -34,16 +35,21 @@
       font-weight: 700;
       font-size: 1.8rem;
       text-align: center;
-      color: #4a3f35; /* marrón oscuro */
-      margin: 0 0 20px 0;
+      color: #f1f1f1;
+      margin: 15 0 5px 0;
       text-transform: uppercase;
       letter-spacing: 2px;
+    }
+    h3 {
+      color: #ddd;
+      text-align: center;
+      margin-top: -35px;
     }
     label {
       font-weight: 600;
       font-size: 0.9rem;
       margin-bottom: 6px;
-      color: #5e534a; /* marrón grisáceo */
+      color: #dddddd;
       display: block;
     }
     select, input[type=number] {
@@ -56,47 +62,55 @@
       outline-offset: 2px;
     }
     select:focus, input[type=number]:focus {
-      border-color: #8a6d3b; /* marrón */
-      box-shadow: 0 0 6px #bba45d55;
+      border-color: #d3b774;
+      box-shadow: 0 0 6px #d3b77488;
     }
-    button {
-      background: #8a6d3b; /* marrón */
-      color: white;
-      font-weight: 700;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      box-shadow: 0 4px 8px #7a5f2aaa;
-      transition: background-color 0.25s ease;
-    }
-    button:hover {
-      background: #a18649;
-      box-shadow: 0 6px 14px #9f8c5fbb;
-    }
+   button {
+  background: black;
+  color: white; /* Verde lima suave */
+  font-weight: 700;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 10px #d9e314a4;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: #111;
+  box-shadow: 0 0 14px #d9e31482;
+  color: #f4f4f4;
+}
+
+    
     .resultado {
-      background: #f9f7f1;
-      border: 2px solid #d7cfa9;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #bbb;
       padding: 20px;
       border-radius: 10px;
       font-weight: 600;
       font-size: 1.1rem;
-      color: #4a3f35;
+      color: #ffffff;
       line-height: 1.5;
       white-space: pre-wrap;
     }
 
     /* Responsive */
-    @media (max-width: 520px) {
-      body {
-        padding: 12px;
-      }
-      .container {
-        padding: 20px;
-      }
+@media (max-width: 520px) {
+  body {
+    background: none;
+  }
+
+  .container {
+    background: url('img/fondo.png') no-repeat center center;
+    background-size: cover;
+    backdrop-filter: brightness(0.8);
+  }
+}
       h2 {
         font-size: 1.5rem;
       }
@@ -104,36 +118,109 @@
         font-size: 1rem;
         padding: 12px;
       }
-    }
+    
+.logo-panel {
+  width: 160px;
+ 
+  align-self: center;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.carrusel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.carrusel img {
+  max-width: 80%;
+  max-height: 180px;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.carrusel button {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0 10px;
+}
+
+.carrusel button:hover {
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .carrusel img {
+    max-width: 190%;
+    max-height: 210px;
+  }
+  .carrusel button {
+    font-size: 1.5rem;
+  }
+}
+
+.carrusel-img-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nombre-imagen {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  text-align: center;
+  width: auto;
+}
+
   </style>
 </head>
 <body>
   <div class="container">
-   <label>Vista previa del panel:</label>
-<img id="imgPanel" src="img/varillado_negro.jpg" alt="Vista previa panel" style="max-width: 100%; border-radius: 10px; margin-bottom: 18px;" />
-    <h2>CALCULADORA DE PANELES</h2>
-    <h3>INGRESA TUS DATOS</h3>
 
-    <label for="tipo">Tipo de panel:</label>
-    <select id="tipo">
-      <option value="varillado">Varillado</option>
-      <option value="liso">Liso</option>
-    </select>
+   <img src="img/logo.png" alt="Logo Accesoa" class="logo-panel" />
+  <h2>CALCULADORA DE PANELES</h2>
+  <div class="carrusel">
+  <button class="prev" onclick="moverCarrusel(-1)">‹</button>
+  <div class="carrusel-img-wrapper">
+    <img id="imagenCarrusel" src="img/CHB37M.png" alt="CHB37M" />
+    <p id="nombreImagen" class="nombre-imagen">CHB37M</p>
+  </div>
+  <button class="next" onclick="moverCarrusel(1)">›</button>
+</div>
+    
 
-    <label for="color">Color:</label>
-    <select id="color">
-      <option value="negro">Negro</option>
-      <option value="madera">Madera</option>
-    </select>
+    <h3>INGRESÁ TUS DATOS</h3>
 
-
-
-
-    <label for="alto">Alto (m):</label>
-    <input type="number" id="alto" step="0.01" placeholder="Ej: 2.5" />
+  <label for="panel">PANEL:</label>
+<select id="panel">
+  <option value="CHB37M">CHB37M</option>
+  <option value="CHB37N">CHB37N</option>
+  <option value="CHB45M">CHB45M</option>
+  <option value="CHB45N">CHB45N</option>
+  <option value="PL188M">PL188M</option>
+  <option value="PL188N">PL188N</option>
+</select>
 
     <label for="ancho">Ancho (m):</label>
-    <input type="number" id="ancho" step="0.01" placeholder="Ej: 3" />
+<input type="number" id="ancho" step="0.01" placeholder="Ej: 3" />
+
+<label for="alto">Alto (m):</label>
+<input type="number" id="alto" step="0.01" placeholder="Ej: 2.5" />
 
     <button onclick="calcular()">Calcular</button>
 
@@ -142,61 +229,98 @@
 
   <script>
     function calcular() {
-      const tipo = document.getElementById('tipo').value;
-      const color = document.getElementById('color').value;
-      const alto = parseFloat(document.getElementById('alto').value);
-      const ancho = parseFloat(document.getElementById('ancho').value);
+  const panel = document.getElementById('panel').value;
+  const alto = parseFloat(document.getElementById('alto').value);
+  const ancho = parseFloat(document.getElementById('ancho').value);
 
-      if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
-        document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
-        return;
-      }
+  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
+    document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
+    return;
+  }
 
-      const superficie = alto * ancho;
-      const coberturaPorTira = 0.87;
-      const tirasNecesarias = Math.ceil(superficie / coberturaPorTira);
+  // Convertimos a centímetros
+  const altoCm = alto * 100;
+  const anchoCm = ancho * 100;
 
-      let precioPorTira = 0;
-      if (tipo === "varillado" && color === "negro") {
-        precioPorTira = 56.78;
-      } else if (tipo === "varillado" && color === "madera") {
-        precioPorTira = 63.5;
-      } else if (tipo === "liso" && color === "negro") {
-        precioPorTira = 78.5;
-      } else if (tipo === "liso" && color === "madera") {
-        precioPorTira = 81.6;
-      }
+  // Especificaciones de la tira
+  const largoTira = 580; // en cm
+  const anchoUtil = 15; // cada tira vertical cubre 15 cm
 
-      const precioTotal = tirasNecesarias * precioPorTira;
+  let precioPorTira = 0;
 
-      document.getElementById('resultado').innerHTML = `
-        Tipo: <strong>${tipo.toUpperCase()}</strong><br />
-        Color: <strong>${color.toUpperCase()}</strong><br />
-        Superficie total: <strong>${superficie.toFixed(2)} m²</strong><br />
-        Tiras necesarias: <strong>${tirasNecesarias}</strong><br />
-        Precio por tira: <strong>$${precioPorTira.toFixed(2)} USD</strong><br />
-        Precio total: <strong>$${precioTotal.toFixed(2)} USD</strong>
-      `;
-    }
+  if (panel === "CHB37M") {
+    precioPorTira = 76.29;
+  } else if (panel === "CHB37N") {
+    precioPorTira = 79.80;
+  } else {
+    document.getElementById('resultado').textContent = "Cálculo disponible solo para CHB37M y CHB37N por ahora.";
+    return;
+  }
 
-    function actualizarImagen() {
-  const tipo = document.getElementById('tipo').value;   // ej: "varillado"
-  const color = document.getElementById('color').value; // ej: "negro"
-  const img = document.getElementById('imgPanel');
+  // 1. Tiras verticales necesarias para cubrir el ancho
+  const tirasVerticales = Math.ceil(anchoCm / anchoUtil);
 
-  // Construir el nombre de la imagen según la selección
-  const nombreImagen = `img/${tipo}_${color}.jpg`;
+  // 2. Cortes posibles por tira
+  const cortesPorTira = Math.floor(largoTira / altoCm);
+  if (cortesPorTira === 0) {
+    document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
+    return;
+  }
 
-  img.src = nombreImagen;
-  img.alt = `Panel ${tipo} color ${color}`;
+  // 3. Tiras reales necesarias
+  const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
+
+  // 4. Residuo
+  const residuoPorTira = largoTira % altoCm;
+  const residuoTotal = residuoPorTira * tirasTotales;
+
+  // 5. Precio total
+  const precioTotal = tirasTotales * precioPorTira;
+
+  // Mostrar resultados
+  document.getElementById('resultado').innerHTML = `
+    Panel: <strong>${panel}</strong><br />
+    Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
+    Tiras reales necesarias: <strong>${tirasTotales}</strong><br />
+    Precio por tira: <strong>USD $${precioPorTira.toFixed(2)}</strong><br />
+    Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
+    <u>Detalle técnico:</u><br />
+    Tiras verticales necesarias: ${tirasVerticales}<br />
+    Cortes por tira: ${cortesPorTira}<br />
+    Residuo por tira: ${residuoPorTira} cm<br />
+    Residuo total: ${residuoTotal} cm
+  `;
 }
 
-// Ejecutar al cambiar cualquiera de los selects
-document.getElementById('tipo').addEventListener('change', actualizarImagen);
-document.getElementById('color').addEventListener('change', actualizarImagen);
+    const imagenesCarrusel = [
+  "CHB37M",
+  "CHB37N",
+  "CHB45M",
+  "CHB45N",
+  "PL188M",
+  "PL188N"
+];
+let indiceActual = 0;
 
-// También ejecutar al cargar la página para que la imagen esté sincronizada con el valor inicial
-window.addEventListener('load', actualizarImagen);
+function moverCarrusel(direccion) {
+  indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
+  const imagen = document.getElementById('imagenCarrusel');
+  imagen.src = `img/${imagenesCarrusel[indiceActual]}.png`;
+  imagen.alt = imagenesCarrusel[indiceActual];
+}
+
+function moverCarrusel(direccion) {
+  indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
+  const imagen = document.getElementById('imagenCarrusel');
+  const nombre = document.getElementById('nombreImagen');
+  const nombreActual = imagenesCarrusel[indiceActual];
+
+  imagen.src = `img/${nombreActual}.png`;
+  imagen.alt = nombreActual;
+  nombre.textContent = nombreActual;
+}
+
+  
   </script>
 </body>
 </html>
