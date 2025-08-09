@@ -31,15 +31,15 @@
       flex-direction: column;
       gap: 18px;
     }
-    h2 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      text-align: center;
-      color: #f1f1f1;
-      margin: 15 0 5px 0;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+   h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  color: #f1f1f1;
+  margin: 15px 0 5px 0; /* <- px agregado */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
     h3 {
       color: #ddd;
       text-align: center;
@@ -106,20 +106,19 @@ button:hover {
   body {
     background: none;
   }
-
   .container {
     background: url('img/fondo.png') no-repeat center center;
     background-size: cover;
     backdrop-filter: brightness(0.8);
   }
+  h2 {
+    font-size: 1.5rem;     /* ESTO va dentro del media */
+  }
+  button {
+    font-size: 1rem;       /* ESTO también */
+    padding: 12px;
+  }
 }
-      h2 {
-        font-size: 1.5rem;
-      }
-      button {
-        font-size: 1rem;
-        padding: 12px;
-      }
     
 .logo-panel {
   width: 160px;
@@ -230,15 +229,16 @@ button:hover {
   </div>
 
   <script>
-    <script>
+
   const PANELS = {
-    CHB37M: { price: 76.29, width: 150 },
-    CHB37N: { price: 79.80, width: 150 },
-    CHB45M: { price: 87.78, width: 138 },
-    CHB45N: { price: 91.86, width: 138 },
-    PL188M: { price: 42.03, width: 110 },
-    PL188N: { price: 43.98, width: 110 },
+    CHB37M: { price: 76.29, anchoTira: 15 },
+    CHB37N: { price: 79.80, anchoTira: 15 },
+    CHB45M: { price: 87.78, anchoTira: 13.8 },
+    CHB45N: { price: 91.86, anchoTira: 13.8 },
+    PL188M: { price: 42.03, anchoTira: 11 },
+    PL188N: { price: 43.98, anchoTira: 11 },
   };
+
   const LARGO_TIRA = 580; // cm
   const imagenesCarrusel = Object.keys(PANELS);
   let indiceActual = 0;
@@ -249,10 +249,7 @@ button:hover {
     imagen.src = `img/${nombre}.png`;
     imagen.alt = nombre;
     nombreEl.textContent = nombre;
-
-    // sincroniza el select
-    const select = document.getElementById('panel');
-    select.value = nombre;
+    document.getElementById('panel').value = nombre; // sincroniza select
   }
 
   function moverCarrusel(direccion) {
@@ -260,7 +257,6 @@ button:hover {
     setCarrusel(imagenesCarrusel[indiceActual]);
   }
 
-  // cuando cambian el select, movemos el carrusel a ese panel
   document.getElementById('panel').addEventListener('change', (e) => {
     const nombre = e.target.value;
     const idx = imagenesCarrusel.indexOf(nombre);
@@ -284,28 +280,28 @@ button:hover {
       return;
     }
 
-    // cm
+    // A cm
     const altoCm = alto * 100;
     const anchoCm = ancho * 100;
 
-    // tiras necesarias en ancho
-    const tirasVerticales = Math.ceil(anchoCm / cfg.width);
+    // 1) Tiras verticales necesarias para el ancho de la pared
+    const tirasVerticales = Math.ceil(anchoCm / cfg.anchoTira);
 
-    // cortes por tira según alto
+    // 2) Cortes posibles por tira según alto
     const cortesPorTira = Math.floor(LARGO_TIRA / altoCm);
     if (cortesPorTira === 0) {
       document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
       return;
     }
 
-    // tiras reales (tirasVerticales dividido los cortes aprovechables de cada tira)
+    // 3) Tiras reales a comprar
     const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
 
-    // residuo
+    // 4) Residuo
     const residuoPorTira = LARGO_TIRA % altoCm;
     const residuoTotal = residuoPorTira * tirasTotales;
 
-    // precio
+    // 5) Precio
     const precioTotal = tirasTotales * cfg.price;
 
     document.getElementById('resultado').innerHTML = `
@@ -315,15 +311,17 @@ button:hover {
       Precio por tira: <strong>USD $${cfg.price.toFixed(2)}</strong><br />
       Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
       <u>Detalle técnico:</u><br />
-      Tiras verticales necesarias: ${tirasVerticales}<br />
-      Cortes por tira: ${cortesPorTira}<br />
+      Ancho por tira: ${cfg.anchoTira} cm<br />
+      Tiras verticales necesarias (ancho): ${tirasVerticales}<br />
+      Cortes por tira (alto): ${cortesPorTira}<br />
       Residuo por tira: ${residuoPorTira} cm<br />
       Residuo total: ${residuoTotal} cm
     `;
   }
 
-  // init: asegura que el carrusel y el select empiecen sincronizados
+  // init
   setCarrusel(imagenesCarrusel[indiceActual]);
+
 </script>
   
   </script>
