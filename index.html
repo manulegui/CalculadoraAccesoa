@@ -306,14 +306,14 @@ button:hover {
 
     document.getElementById('resultado').innerHTML = `
       Panel: <strong>${panel}</strong><br />
-      Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
+      Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
       Tiras necesarias: <strong>${tirasTotales}</strong><br />
       Precio por tira: <strong>USD $${cfg.price.toFixed(2)}</strong><br />
       Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
       <u>Detalle técnico:</u><br />
       Ancho por tira: ${cfg.anchoTira} cm<br />
-      Tiras verticales necesarias (ancho): ${tirasVerticales}<br />
-      Cortes por tira (alto): ${cortesPorTira}<br />
+      Tiras verticales necesarias: ${tirasVerticales}<br />
+      Cortes por tira: ${cortesPorTira}<br />
       Residuo por tira: ${residuoPorTira} cm<br />
       Residuo total: ${residuoTotal} cm
     `;
