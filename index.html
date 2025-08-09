@@ -230,248 +230,101 @@ button:hover {
   </div>
 
   <script>
-    function calcular() {
-  const panel = document.getElementById('panel').value;
-  const alto = parseFloat(document.getElementById('alto').value);
-  const ancho = parseFloat(document.getElementById('ancho').value);
+    <script>
+  const PANELS = {
+    CHB37M: { price: 76.29, width: 150 },
+    CHB37N: { price: 79.80, width: 150 },
+    CHB45M: { price: 87.78, width: 138 },
+    CHB45N: { price: 91.86, width: 138 },
+    PL188M: { price: 42.03, width: 110 },
+    PL188N: { price: 43.98, width: 110 },
+  };
+  const LARGO_TIRA = 580; // cm
+  const imagenesCarrusel = Object.keys(PANELS);
+  let indiceActual = 0;
 
-  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
-    document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
-    return;
+  function setCarrusel(nombre) {
+    const imagen = document.getElementById('imagenCarrusel');
+    const nombreEl = document.getElementById('nombreImagen');
+    imagen.src = `img/${nombre}.png`;
+    imagen.alt = nombre;
+    nombreEl.textContent = nombre;
+
+    // sincroniza el select
+    const select = document.getElementById('panel');
+    select.value = nombre;
   }
 
-  // Convertimos a centímetros
-  const altoCm = alto * 100;
-  const anchoCm = ancho * 100;
-
-  // Especificaciones de la tira
-  const largoTira = 580; // en cm
-  const anchoUtil = 15; // cada tira vertical cubre 15 cm
-
-  let precioPorTira = 0;
-
-  if (panel === "CHB37M") {
-    precioPorTira = 76.29;
-  } else if (panel === "CHB37N") {
-    precioPorTira = 79.80;
-  } else {
-    document.getElementById('resultado').textContent = "Cálculo disponible solo para CHB37M y CHB37N por ahora.";
-    return;
+  function moverCarrusel(direccion) {
+    indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
+    setCarrusel(imagenesCarrusel[indiceActual]);
   }
 
-  // 1. Tiras verticales necesarias para cubrir el ancho
-  const tirasVerticales = Math.ceil(anchoCm / anchoUtil);
+  // cuando cambian el select, movemos el carrusel a ese panel
+  document.getElementById('panel').addEventListener('change', (e) => {
+    const nombre = e.target.value;
+    const idx = imagenesCarrusel.indexOf(nombre);
+    indiceActual = idx >= 0 ? idx : 0;
+    setCarrusel(imagenesCarrusel[indiceActual]);
+  });
 
-  // 2. Cortes posibles por tira
-  const cortesPorTira = Math.floor(largoTira / altoCm);
-  if (cortesPorTira === 0) {
-    document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
-    return;
+  function calcular() {
+    const panel = document.getElementById('panel').value;
+    const alto = parseFloat(document.getElementById('alto').value);
+    const ancho = parseFloat(document.getElementById('ancho').value);
+
+    if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
+      document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
+      return;
+    }
+
+    const cfg = PANELS[panel];
+    if (!cfg) {
+      document.getElementById('resultado').textContent = "Panel no reconocido.";
+      return;
+    }
+
+    // cm
+    const altoCm = alto * 100;
+    const anchoCm = ancho * 100;
+
+    // tiras necesarias en ancho
+    const tirasVerticales = Math.ceil(anchoCm / cfg.width);
+
+    // cortes por tira según alto
+    const cortesPorTira = Math.floor(LARGO_TIRA / altoCm);
+    if (cortesPorTira === 0) {
+      document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
+      return;
+    }
+
+    // tiras reales (tirasVerticales dividido los cortes aprovechables de cada tira)
+    const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
+
+    // residuo
+    const residuoPorTira = LARGO_TIRA % altoCm;
+    const residuoTotal = residuoPorTira * tirasTotales;
+
+    // precio
+    const precioTotal = tirasTotales * cfg.price;
+
+    document.getElementById('resultado').innerHTML = `
+      Panel: <strong>${panel}</strong><br />
+      Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
+      Tiras necesarias: <strong>${tirasTotales}</strong><br />
+      Precio por tira: <strong>USD $${cfg.price.toFixed(2)}</strong><br />
+      Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
+      <u>Detalle técnico:</u><br />
+      Tiras verticales necesarias: ${tirasVerticales}<br />
+      Cortes por tira: ${cortesPorTira}<br />
+      Residuo por tira: ${residuoPorTira} cm<br />
+      Residuo total: ${residuoTotal} cm
+    `;
   }
 
-  // 3. Tiras reales necesarias
-  const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
-
-  // 4. Residuo
-  const residuoPorTira = largoTira % altoCm;
-  const residuoTotal = residuoPorTira * tirasTotales;
-
-  // 5. Precio total
-  const precioTotal = tirasTotales * precioPorTira;
-
-  // Mostrar resultados
-  document.getElementById('resultado').innerHTML = `
-    Panel: <strong>${panel}</strong><br />
-    Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
-    Tiras necesarias: <strong>${tirasTotales}</strong><br />
-    Precio por tira: <strong>USD $${precioPorTira.toFixed(2)}</strong><br />
-    Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
-    <u>Detalle técnico:</u><br />
-    Tiras verticales necesarias: ${tirasVerticales}<br />
-    Cortes por tira: ${cortesPorTira}<br />
-    Residuo por tira: ${residuoPorTira} cm<br />
-    Residuo total: ${residuoTotal} cm
-  `;
-}
-
-    const imagenesCarrusel = [
-  "CHB37M",
-  "CHB37N",
-  "CHB45M",
-  "CHB45N",
-  "PL188M",
-  "PL188N"
-];
-let indiceActual = 0;
-
-function moverCarrusel(direccion) {
-  indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
-  const imagen = document.getElementById('imagenCarrusel');
-  imagen.src = `img/${imagenesCarrusel[indiceActual]}.png`;
-  imagen.alt = imagenesCarrusel[indiceActual];
-}
-
-function moverCarrusel(direccion) {
-  indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
-  const imagen = document.getElementById('imagenCarrusel');
-  const nombre = document.getElementById('nombreImagen');
-  const nombreActual = imagenesCarrusel[indiceActual];
-
-  imagen.src = `img/${nombreActual}.png`;
-  imagen.alt = nombreActual;
-  nombre.textContent = nombreActual;
-}
-
-function calcular() {
-  const panel = document.getElementById('panel').value;
-  const alto = parseFloat(document.getElementById('alto').value);
-  const ancho = parseFloat(document.getElementById('ancho').value);
-
-  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
-    document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
-    return;
-  }
-
-  // Convertimos a centímetros
-  const altoCm = alto * 100;
-  const anchoCm = ancho * 100;
-
-  // Variables que dependen del panel
-  let precioPorTira = 0;
-  let anchoUtil = 0;
-  const largoTira = 580; // en cm
-
-  if (panel === "CHB37M") {
-    precioPorTira = 76.29;
-    anchoUtil = 150;
-  } else if (panel === "CHB37N") {
-    precioPorTira = 79.80;
-    anchoUtil = 150;
-  } else if (panel === "PL188M") {
-    precioPorTira = 42.03;
-    anchoUtil = 110; // corregido
-  } else if (panel === "PL188N") {
-    precioPorTira = 43.98;
-    anchoUtil = 110; // corregido
-  } else {
-    document.getElementById('resultado').textContent = "Cálculo disponible solo para CHB37 y PL188 por ahora.";
-    return;
-  }
-
-  // 1. Tiras verticales necesarias para cubrir el ancho
-  const tirasVerticales = Math.ceil(anchoCm / anchoUtil);
-
-  // 2. Cortes posibles por tira
-  const cortesPorTira = Math.floor(largoTira / altoCm);
-  if (cortesPorTira === 0) {
-    document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
-    return;
-  }
-
-  // 3. Tiras reales necesarias
-  const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
-
-  // 4. Residuo
-  const residuoPorTira = largoTira % altoCm;
-  const residuoTotal = residuoPorTira * tirasTotales;
-
-  // 5. Precio total
-  const precioTotal = tirasTotales * precioPorTira;
-
-  // Mostrar resultados
-  document.getElementById('resultado').innerHTML = `
-    Panel: <strong>${panel}</strong><br />
-    Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
-    Tiras necesarias: <strong>${tirasTotales}</strong><br />
-    Precio por tira: <strong>USD $${precioPorTira.toFixed(2)}</strong><br />
-    Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
-    <u>Detalle técnico:</u><br />
-    Tiras verticales necesarias: ${tirasVerticales}<br />
-    Cortes por tira: ${cortesPorTira}<br />
-    Residuo por tira: ${residuoPorTira} cm<br />
-    Residuo total: ${residuoTotal} cm
-  `;
-}
-
-
-function calcular() {
-  const panel = document.getElementById('panel').value;
-  const alto = parseFloat(document.getElementById('alto').value);
-  const ancho = parseFloat(document.getElementById('ancho').value);
-
-  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
-    document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
-    return;
-  }
-
-  // Convertimos a centímetros
-  const altoCm = alto * 100;
-  const anchoCm = ancho * 100;
-
-  // Largo de todas las tiras (en cm)
-  const largoTira = 580;
-
-  // Variables por panel
-  let precioPorTira = 0;
-  let anchoUtil = 0;
-
-  if (panel === "CHB37M") {
-    precioPorTira = 76.29;
-    anchoUtil = 150;
-  } else if (panel === "CHB37N") {
-    precioPorTira = 79.80;
-    anchoUtil = 150;
-  } else if (panel === "CHB45M") {
-    precioPorTira = 87.78;
-    anchoUtil = 138;
-  } else if (panel === "CHB45N") {
-    precioPorTira = 91.86;
-    anchoUtil = 138;
-  } else if (panel === "PL188M") {
-    precioPorTira = 42.03;
-    anchoUtil = 110;
-  } else if (panel === "PL188N") {
-    precioPorTira = 43.98;
-    anchoUtil = 110;
-  } else {
-    document.getElementById('resultado').textContent = "Panel no reconocido.";
-    return;
-  }
-
-  // 1. Tiras verticales necesarias para cubrir el ancho
-  const tirasVerticales = Math.ceil(anchoCm / anchoUtil);
-
-  // 2. Cortes posibles por tira
-  const cortesPorTira = Math.floor(largoTira / altoCm);
-  if (cortesPorTira === 0) {
-    document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
-    return;
-  }
-
-  // 3. Tiras reales necesarias
-  const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
-
-  // 4. Residuo
-  const residuoPorTira = largoTira % altoCm;
-  const residuoTotal = residuoPorTira * tirasTotales;
-
-  // 5. Precio total
-  const precioTotal = tirasTotales * precioPorTira;
-
-  // Mostrar resultados
-  document.getElementById('resultado').innerHTML = `
-    Panel: <strong>${panel}</strong><br />
-    Superficie a cubrir: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
-    Tiras necesarias: <strong>${tirasTotales}</strong><br />
-    Precio por tira: <strong>USD $${precioPorTira.toFixed(2)}</strong><br />
-    Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
-    <u>Detalle técnico:</u><br />
-    Tiras verticales necesarias: ${tirasVerticales}<br />
-    Cortes por tira: ${cortesPorTira}<br />
-    Residuo por tira: ${residuoPorTira} cm<br />
-    Residuo total: ${residuoTotal} cm
-  `;
-}
+  // init: asegura que el carrusel y el select empiecen sincronizados
+  setCarrusel(imagenesCarrusel[indiceActual]);
+</script>
   
   </script>
 </body>
