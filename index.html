@@ -101,6 +101,30 @@ button:hover {
   text-align: center;       /* Texto centrado */
 }
 
+.resultado .destacado {
+  background: #fff;
+  color: #111;
+  padding: 8px 12px;
+  border-radius: 10px;
+  display: inline-block;
+  margin: 6px 0;
+  font-weight: 800;
+}
+
+.resultado hr {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  margin: 10px 0 8px;
+}
+
+.resultado .subtitulo {
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  opacity: .9;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
     /* Responsive */
 @media (max-width: 520px) {
   body {
@@ -230,6 +254,7 @@ button:hover {
 
   <script>
 
+
   const PANELS = {
     CHB37M: { price: 76.29, anchoTira: 15 },
     CHB37N: { price: 79.80, anchoTira: 15 },
@@ -305,24 +330,24 @@ button:hover {
     const precioTotal = tirasTotales * cfg.price;
 
     document.getElementById('resultado').innerHTML = `
-      Panel: <strong>${panel}</strong><br />
-      Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong><br />
-      Tiras necesarias: <strong>${tirasTotales}</strong><br />
-      Precio por tira: <strong>USD $${cfg.price.toFixed(2)}</strong><br />
-      Precio total: <strong>USD $${precioTotal.toFixed(2)}</strong><br /><br />
-      <u>Detalle técnico:</u><br />
-      Ancho por tira: ${cfg.anchoTira} cm<br />
+      <div>Panel: <strong>${panel}</strong></div>
+      <div>Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong></div>
+
+      <div class="destacado">TOTAL TIRAS: <strong>${tirasTotales}</strong></div>
+      <div class="destacado">TOTAL (final): <strong>USD $${precioTotal.toFixed(2)}</strong></div>
+
+      <hr>
+      <div class="subtitulo">Datos adicionales</div>
       Tiras verticales necesarias: ${tirasVerticales}<br />
       Cortes por tira: ${cortesPorTira}<br />
       Residuo por tira: ${residuoPorTira} cm<br />
       Residuo total: ${residuoTotal} cm
     `;
-  }
+  } // <- ESTE corchete faltaba
 
-  // init
+  // init (esto va fuera de la función)
   setCarrusel(imagenesCarrusel[indiceActual]);
 
-</script>
   
   </script>
 </body>
