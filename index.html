@@ -4,14 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Simulador de Paneles</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: "Spectral", serif;
+      font-family: "Spline Sans", sans-serif;
       background: url('img/fondo.png') no-repeat center center fixed;
       background-size: cover;
       color: #f1f1f1;
@@ -21,9 +22,10 @@
       justify-content: center;
       min-height: 100vh;
     }
-    h2, h3 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
+    /* títulos (dejé Segoe como tenías) */
+    h2, h3 { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
     .container {
       background: rgba(0, 0, 0, 0.7);
       max-width: 480px;
@@ -45,6 +47,7 @@
       letter-spacing: 2px;
     }
     h3 { color: #ddd; text-align: center; margin-top: -35px; }
+
     label {
       font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; color: #ddd; display: block;
     }
@@ -60,31 +63,100 @@
     }
     button:hover { background: #111; box-shadow: 0 0 14px #d9e31482; color: #f4f4f4; }
 
-    /* === Resultado con fondo, centrado y por filas === */
+    /* === RESULTADO estilo pro === */
     .resultado {
-      background: rgba(0, 0, 0, 0.55);
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(12, 12, 12, 0.55);
+      backdrop-filter: blur(6px);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 14px 16px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-      text-align: center;
-      line-height: 1.15;           /* más respirable */
-      margin: 8px auto 0;
-      max-width: 100%;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.28);
+      text-align: left;
+      line-height: 1.45;
+      margin: 14px auto 0;
     }
-    .resultado .fila { margin:10px 5px; }  /* cada dato en su fila */
-    .panel-titulo { font-size: 0.95rem; opacity: .95; margin-bottom: 2px; }
-    .panel-nombre {
-      font-weight: 900; font-size: 1.5rem; letter-spacing: .5px;
-      display: inline-block; padding: 2px 6px; border-radius: 6px;
-      background: rgba(255,255,255,0.1);
+    
+    .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* o flex-start si querés pegados a la izquierda */
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.panel-titulo {
+  font-size: 0.9rem;
+  letter-spacing: .8px;
+  opacity: .85;
+  text-transform: uppercase;
+  margin: 0; /* quité el margin que lo desalineaba */
+}
+
+.panel-nombre {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: .3px;
+}
+
+    /* KPIs a ancho completo */
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #111;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+      font-weight: 700;
+      margin: 12px 0;
     }
-    .resumen { font-size: 1rem; }
-    .superficie { font-size: 0.95rem; opacity: .95; }
+/* poné ESTO DESPUÉS de la regla .stat {} (idealmente al final del <style>) */
+.stat.total { 
+  background: #cccccc !important;  /* gris + notorio */
+  color: #0f172a;                   /* texto un poco más oscuro */
+}
+.stat.valor { 
+  background: #cecbcb !important;   /* blanco pleno */
+  color: #0f172a;
+}
+
+    .stat__label { font-weight: 700; opacity: .85; }
+    .stat__value { font-weight: 900; }
+
+    .superficie { margin: 10px 0 6px; font-size: 0.98rem; opacity: .95; }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      margin: 14px 0;
+    }
     .subtitulo {
-      text-transform: uppercase; letter-spacing: .8px; opacity: .9; font-weight: 700; margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      font-weight: 800;
+      opacity: .95;
+      margin: 4px 0 8px;
     }
-    .detalle { font-size: 0.95rem; opacity: .95; }
+    .dato {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      font-size: 0.98rem;
+    }
+    .dato__label { opacity: .9; }
+    .dato__value { font-weight: 800; }
+
+    .resultado .fila { margin: 10px 0; }
 
     /* Responsive */
     @media (max-width: 520px) {
@@ -94,9 +166,10 @@
       }
       h2 { font-size: 1.5rem; }
       button { font-size: 1rem; padding: 12px; }
-      .panel-nombre { font-size: 1.35rem; }
-      .resultado { padding: 12px 14px; }
-      .resultado .fila { margin: 5px 0; }
+      .panel-nombre { font-size: 1.05rem; }
+      .resultado { padding: 18px; }
+      .stat { padding: 10px 12px; }
+      .resultado .fila { margin: 6px 0; }
     }
 
     .logo-panel { width: 160px; align-self: center; margin-top: -10px; margin-bottom: -10px; mix-blend-mode: screen; pointer-events: none; }
@@ -112,24 +185,12 @@
       .carrusel img { max-width: 190%; max-height: 210px; }
       .carrusel button { font-size: 1.5rem; }
     }
-
     .carrusel-img-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-
-    /* Nombre debajo de la foto, sin superponer */
     .nombre-imagen {
       background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 1.3rem; padding: 8px 10px;
       border-radius: 6px; margin-top: 12px; text-align: center; width: auto;
     }
     @media (max-width: 520px) { .nombre-imagen { font-size: 1.1rem; margin-top: 16px; } }
-
-   .pill {
-  background: rgba(255, 255, 255, 0.8); /* blanco 80% */
-  color: #111;
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-weight: 800;
-}
   </style>
 </head>
 <body>
@@ -191,18 +252,19 @@
       nombreEl.textContent = nombre;
       document.getElementById('panel').value = nombre;
     }
-
     function moverCarrusel(direccion) {
       indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
       setCarrusel(imagenesCarrusel[indiceActual]);
     }
-
     document.getElementById('panel').addEventListener('change', (e) => {
       const nombre = e.target.value;
       const idx = imagenesCarrusel.indexOf(nombre);
       indiceActual = idx >= 0 ? idx : 0;
       setCarrusel(imagenesCarrusel[indiceActual]);
     });
+
+    // Formateador USD
+    const fmtUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
 
     function calcular() {
       const panel = document.getElementById('panel').value;
@@ -220,44 +282,59 @@
         return;
       }
 
-      // A cm
       const altoCm = alto * 100;
       const anchoCm = ancho * 100;
 
-      // 1) Tiras verticales necesarias para el ancho
       const tirasVerticales = Math.ceil(anchoCm / cfg.anchoTira);
-
-      // 2) Cortes posibles por tira según alto
       const cortesPorTira = Math.floor(LARGO_TIRA / altoCm);
       if (cortesPorTira === 0) {
         document.getElementById('resultado').textContent = "El alto ingresado supera el largo de la tira (5,8 m).";
         return;
       }
-
-      // 3) Tiras reales a comprar
       const tirasTotales = Math.ceil(tirasVerticales / cortesPorTira);
 
-      // 4) Residuo
       const residuoPorTira = LARGO_TIRA % altoCm;
       const residuoTotal = residuoPorTira * tirasTotales;
 
-      // 5) Precio
       const precioTotal = tirasTotales * cfg.price;
 
-      // Resultado por filas (cada dato en su línea)
       document.getElementById('resultado').innerHTML = `
-        <div class="fila panel-titulo">Panel</div>
-        <div class="fila"><span class="panel-nombre">${panel}</span></div>
+      <div class="panel-header">
+  <span class="panel-titulo">Panel</span>
+  <span class="panel-nombre">${panel}</span>
+</div>
 
-       <div class="fila"><span class="pill">Total tiras: <strong>${tirasTotales}</strong></span></div>
-<div class="fila"><span class="pill">Valor: <strong>USD $${precioTotal.toFixed(2)}</strong></span></div>
-        <div class="fila superficie">Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong></div>
+        <div class="stat total">
+          <span class="stat__label">Total tiras</span>
+          <span class="stat__value">${tirasTotales}</span>
+        </div>
 
-        <div class="fila subtitulo">Datos adicionales</div>
-        <div class="fila detalle">Tiras verticales: <strong>${tirasVerticales}</strong></div>
-        <div class="fila detalle">Cortes por tira: <strong>${cortesPorTira}</strong></div>
-        <div class="fila detalle">Residuo por tira: <strong>${residuoPorTira} cm</strong></div>
-        <div class="fila detalle">Residuo total: <strong>${residuoTotal} cm</strong></div>
+        <div class="stat valor">
+          <span class="stat__label">Valor</span>
+          <span class="stat__value">${fmtUSD.format(precioTotal)}</span>
+        </div>
+
+        <div class="superficie">Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong></div>
+
+        <div class="divider"></div>
+        <div class="subtitulo">Datos adicionales</div>
+
+        <div class="dato">
+          <span class="dato__label">Tiras verticales</span>
+          <span class="dato__value">${tirasVerticales}</span>
+        </div>
+        <div class="dato">
+          <span class="dato__label">Cortes por tira</span>
+          <span class="dato__value">${cortesPorTira}</span>
+        </div>
+        <div class="dato">
+          <span class="dato__label">Residuo por tira</span>
+          <span class="dato__value">${residuoPorTira} cm</span>
+        </div>
+        <div class="dato">
+          <span class="dato__label">Residuo total</span>
+          <span class="dato__value">${residuoTotal} cm</span>
+        </div>
       `;
     }
 
