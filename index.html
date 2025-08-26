@@ -263,9 +263,10 @@
       setCarrusel(imagenesCarrusel[indiceActual]);
     });
 
-    // Formateador USD
-    const fmtUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
-
+    // Formateador en estilo argentino con "U$D"
+function fmtUSD(valor) {
+   return `U$D\u00A0${valor.toFixed(2)}`;
+}
     function calcular() {
       const panel = document.getElementById('panel').value;
       const alto = parseFloat(document.getElementById('alto').value);
@@ -311,7 +312,8 @@
 
         <div class="stat valor">
           <span class="stat__label">Valor</span>
-          <span class="stat__value">${fmtUSD.format(precioTotal)}</span>
+          <span class="stat__value">${fmtUSD(precioTotal)}
+</span>
         </div>
 
         <div class="superficie">Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong></div>
