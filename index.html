@@ -343,5 +343,14 @@ function fmtUSD(valor) {
     // init
     setCarrusel(imagenesCarrusel[indiceActual]);
   </script>
+  <script>
+  window.onload = function () {
+    let clave = prompt("Ingresá la clave para acceder:");
+    if (clave !== "2003") {
+      alert("Ingresa un código válido, contactate con tu vendedor.");
+      document.body.innerHTML = ""; // borra el contenido de la página
+    }
+  };
+</script>
 </body>
 </html>
