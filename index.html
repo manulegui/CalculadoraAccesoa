@@ -50,11 +50,12 @@
     label {
       font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; color: #ddd; display: block;
     }
-    select, input[type=number] {
+    input[type=text], select {
       width: 100%; padding: 10px 14px; border: 2px solid #ccc; border-radius: 8px; font-size: 1rem;
       transition: border-color 0.3s ease; outline-offset: 2px;
     }
-    select:focus, input[type=number]:focus { border-color: #d3b774; box-shadow: 0 0 6px #d3b77488; }
+    input[type=text]:focus, select:focus { border-color: #d3b774; box-shadow: 0 0 6px #d3b77488; }
+
     button {
       background: black; color: white; font-weight: 700; padding: 14px; border: none; border-radius: 10px;
       font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px;
@@ -74,172 +75,58 @@
       line-height: 1.45;
       margin: 14px auto 0;
     }
-    
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .panel-titulo {
-      font-size: 0.9rem;
-      letter-spacing: .8px;
-      opacity: .85;
-      text-transform: uppercase;
-      margin: 0;
-    }
-    .panel-nombre {
-      padding: 6px 12px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
-      font-weight: 900;
-      font-size: 1.1rem;
-      letter-spacing: .3px;
-    }
 
-    .stat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #111;
-      box-shadow: 0 2px 10px rgba(0,0,0,.18);
-      font-weight: 700;
-      margin: 12px 0;
-    }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .panel-titulo { font-size: 0.9rem; letter-spacing: .8px; opacity: .85; text-transform: uppercase; margin: 0; }
+    .panel-nombre { padding: 6px 12px; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08)); font-weight: 900; font-size: 1.1rem; letter-spacing: .3px; }
+
+    .stat { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 10px; background: rgba(255, 255, 255, 0.92); color: #111; box-shadow: 0 2px 10px rgba(0,0,0,.18); font-weight: 700; margin: 12px 0; }
     .stat.total { background: #cccccc !important; color: #0f172a; }
     .stat.valor { background: #cecbcb !important; color: #0f172a; }
-
     .stat__label { font-weight: 700; opacity: .85; }
     .stat__value { font-weight: 900; }
 
     .superficie { margin: 10px 0 6px; font-size: 0.98rem; opacity: .95; }
-
-    .divider {
-      height: 1px;
-      width: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
-      margin: 14px 0;
-    }
-    .subtitulo {
-      text-transform: uppercase;
-      letter-spacing: .9px;
-      font-weight: 800;
-      opacity: .95;
-      margin: 4px 0 8px;
-    }
-    .dato {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 6px 0;
-      font-size: 0.98rem;
-    }
+    .divider { height: 1px; width: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent); margin: 14px 0; }
+    .subtitulo { text-transform: uppercase; letter-spacing: .9px; font-weight: 800; opacity: .95; margin: 4px 0 8px; }
+    .dato { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; font-size: 0.98rem; }
     .dato__label { opacity: .9; }
     .dato__value { font-weight: 800; }
 
-    .resultado .fila { margin: 10px 0; }
-
     @media (max-width: 520px) {
       body { background: none; }
-      .container {
-        background: url('img/fondo.png') no-repeat center center; background-size: cover; backdrop-filter: brightness(0.8);
-      }
+      .container { background: url('img/fondo.png') no-repeat center center; background-size: cover; backdrop-filter: brightness(0.8); }
       h2 { font-size: 1.5rem; }
       button { font-size: 1rem; padding: 12px; }
       .panel-nombre { font-size: 1.05rem; }
       .resultado { padding: 18px; }
       .stat { padding: 10px 12px; }
-      .resultado .fila { margin: 6px 0; }
     }
 
     .logo-panel { width: 160px; align-self: center; margin-top: -10px; margin-bottom: -10px; mix-blend-mode: screen; pointer-events: none; }
 
-    .carrusel {
-      display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative;
-    }
+    .carrusel { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; position: relative; }
     .carrusel img { max-width: 220%; max-height: 300px; object-fit: contain; transition: opacity 0.3s ease; }
     .carrusel button { background: none; border: none; color: #ccc; font-size: 2rem; cursor: pointer; transition: color 0.3s ease; padding: 0 10px; }
     .carrusel button:hover { color: #fff; }
-
-    @media (max-width: 520px) {
-      .carrusel img { max-width: 190%; max-height: 210px; }
-      .carrusel button { font-size: 1.5rem; }
-    }
+    @media (max-width: 520px) { .carrusel img { max-width: 190%; max-height: 210px; } .carrusel button { font-size: 1.5rem; } }
     .carrusel-img-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-    .nombre-imagen {
-      background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 1.3rem; padding: 8px 10px;
-      border-radius: 6px; margin-top: 12px; text-align: center; width: auto;
-    }
-    @media (max-width: 520px) { .nombre-imagen { font-size: 1.1rem; margin-top: 16px; } }
+    .nombre-imagen { background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 1.3rem; padding: 8px 10px; border-radius: 6px; margin-top: 12px; text-align: center; width: auto; }
 
     /* 🔒 Estilo modal clave */
-    #overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('img/fondo.png') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .modal {
-      background: rgba(0, 0, 0, 0.75);
-      padding: 30px 25px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-      max-width: 320px;
-      text-align: center;
-      color: #fff;
-      font-family: "Spline Sans", sans-serif;
-    }
-    .modal h2 {
-      margin-top: 0;
-      font-size: 1.4rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .modal input {
-      width: 100%;
-      padding: 10px;
-      margin: 15px 0;
-      border-radius: 8px;
-      border: 2px solid #ccc;
-      font-size: 1rem;
-      text-align: center;
-    }
-    .modal button {
-      background: #000;
-      color: #fff;
-      font-weight: bold;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      transition: 0.3s;
-    }
-    .modal button:hover {
-      background: #111;
-      box-shadow: 0 0 8px #d9e31482;
-    }
-    .error {
-      margin-top: 8px;
-      font-size: 0.85rem;
-      color: #ff6b6b;
-    }
+    #overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: url('img/fondo.png') no-repeat center center fixed; background-size: cover; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+    .modal { background: rgba(0,0,0,0.75); padding: 30px 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); max-width: 320px; text-align: center; color: #fff; font-family: "Spline Sans", sans-serif; }
+    .modal input { width: 100%; padding: 10px; margin: 15px 0; border-radius: 8px; border: 2px solid #ccc; font-size: 1rem; text-align: center; }
+    .modal button { background: #000; color: #fff; font-weight: bold; padding: 10px 16px; border-radius: 8px; cursor: pointer; border: none; transition: 0.3s; }
+    .modal button:hover { background: #111; box-shadow: 0 0 8px #d9e31482; }
+    .error { margin-top: 8px; font-size: 0.85rem; color: #ff6b6b; }
   </style>
 </head>
 <body>
+
   <!-- 🔒 Modal clave -->
   <div id="overlay">
     <div class="modal">
-      
       <p>Ingresá la clave para acceder:</p>
       <input type="password" id="claveInput" placeholder="Clave" />
       <button onclick="verificarClave()">Ingresar</button>
@@ -274,10 +161,10 @@
     </select>
 
     <label for="ancho">Ancho (m):</label>
-    <input type="number" id="ancho" step="0.01" placeholder="Ej: 3" />
+    <input type="text" id="ancho" placeholder="Ej: 3" />
 
     <label for="alto">Alto (m):</label>
-    <input type="number" id="alto" step="0.01" placeholder="Ej: 2.5" />
+    <input type="text" id="alto" placeholder="Ej: 2,5" />
 
     <button onclick="calcular()">Calcular</button>
 
@@ -293,7 +180,6 @@
       PL188M: { price: 42.03, anchoTira: 11 },
       PL188N: { price: 43.98, anchoTira: 11 },
     };
-
     const LARGO_TIRA = 580; // cm
     const imagenesCarrusel = Object.keys(PANELS);
     let indiceActual = 0;
@@ -306,10 +192,12 @@
       nombreEl.textContent = nombre;
       document.getElementById('panel').value = nombre;
     }
+
     function moverCarrusel(direccion) {
       indiceActual = (indiceActual + direccion + imagenesCarrusel.length) % imagenesCarrusel.length;
       setCarrusel(imagenesCarrusel[indiceActual]);
     }
+
     document.getElementById('panel').addEventListener('change', (e) => {
       const nombre = e.target.value;
       const idx = imagenesCarrusel.indexOf(nombre);
@@ -321,26 +209,23 @@
       return `U$D\u00A0${valor.toFixed(2)}`;
     }
 
+    function obtenerValor(id) {
+      const valor = document.getElementById(id).value.trim();
+      const num = parseFloat(valor.replace(",", "."));
+      return isNaN(num) ? null : num;
+    }
+
     function calcular() {
       const panel = document.getElementById('panel').value;
-      function obtenerValor(id) {
-  const valor = document.getElementById(id).value.trim();
-  return parseFloat(valor.replace(",", "."));
-}
+      const alto = obtenerValor('alto');
+      const ancho = obtenerValor('ancho');
 
-const alto = obtenerValor('alto');
-const ancho = obtenerValor('ancho');
-      if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
+      if (alto === null || ancho === null || alto <= 0 || ancho <= 0) {
         document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
         return;
       }
 
       const cfg = PANELS[panel];
-      if (!cfg) {
-        document.getElementById('resultado').textContent = "Panel no reconocido.";
-        return;
-      }
-
       const altoCm = alto * 100;
       const anchoCm = ancho * 100;
 
@@ -402,8 +287,7 @@ const ancho = obtenerValor('ancho');
         document.getElementById("overlay").style.display = "none";
         document.getElementById("contenido").style.display = "flex";
       } else {
-        document.getElementById("mensajeError").textContent =
-          "Clave incorrecta. Contactate con tu vendedor.";
+        document.getElementById("mensajeError").textContent = "Clave incorrecta. Contactate con tu vendedor.";
       }
     }
   </script>
