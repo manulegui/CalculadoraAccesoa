@@ -23,7 +23,6 @@
       min-height: 100vh;
     }
 
-    /* títulos (dejé Segoe como tenías) */
     h2, h3 { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
     .container {
@@ -63,10 +62,8 @@
     }
     button:hover { background: #111; box-shadow: 0 0 14px #d9e31482; color: #f4f4f4; }
 
-    /* === RESULTADO estilo pro === */
     .resultado {
       width: 100%;
-      box-sizing: border-box;
       background: rgba(12, 12, 12, 0.55);
       backdrop-filter: blur(6px);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -79,31 +76,28 @@
     }
     
     .panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* o flex-start si querés pegados a la izquierda */
-  gap: 10px;
-  margin-bottom: 8px;
-}
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .panel-titulo {
+      font-size: 0.9rem;
+      letter-spacing: .8px;
+      opacity: .85;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .panel-nombre {
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: .3px;
+    }
 
-.panel-titulo {
-  font-size: 0.9rem;
-  letter-spacing: .8px;
-  opacity: .85;
-  text-transform: uppercase;
-  margin: 0; /* quité el margin que lo desalineaba */
-}
-
-.panel-nombre {
-  padding: 6px 12px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: .3px;
-}
-
-    /* KPIs a ancho completo */
     .stat {
       display: flex;
       justify-content: space-between;
@@ -118,15 +112,8 @@
       font-weight: 700;
       margin: 12px 0;
     }
-/* poné ESTO DESPUÉS de la regla .stat {} (idealmente al final del <style>) */
-.stat.total { 
-  background: #cccccc !important;  /* gris + notorio */
-  color: #0f172a;                   /* texto un poco más oscuro */
-}
-.stat.valor { 
-  background: #cecbcb !important;   /* blanco pleno */
-  color: #0f172a;
-}
+    .stat.total { background: #cccccc !important; color: #0f172a; }
+    .stat.valor { background: #cecbcb !important; color: #0f172a; }
 
     .stat__label { font-weight: 700; opacity: .85; }
     .stat__value { font-weight: 900; }
@@ -158,7 +145,6 @@
 
     .resultado .fila { margin: 10px 0; }
 
-    /* Responsive */
     @media (max-width: 520px) {
       body { background: none; }
       .container {
@@ -191,10 +177,78 @@
       border-radius: 6px; margin-top: 12px; text-align: center; width: auto;
     }
     @media (max-width: 520px) { .nombre-imagen { font-size: 1.1rem; margin-top: 16px; } }
+
+    /* 🔒 Estilo modal clave */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('img/fondo.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .modal {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      max-width: 320px;
+      text-align: center;
+      color: #fff;
+      font-family: "Spline Sans", sans-serif;
+    }
+    .modal h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 1rem;
+      text-align: center;
+    }
+    .modal button {
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+    }
+    .modal button:hover {
+      background: #111;
+      box-shadow: 0 0 8px #d9e31482;
+    }
+    .error {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #ff6b6b;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- 🔒 Modal clave -->
+  <div id="overlay">
+    <div class="modal">
+      
+      <p>Ingresá la clave para acceder:</p>
+      <input type="password" id="claveInput" placeholder="Clave" />
+      <button onclick="verificarClave()">Ingresar</button>
+      <p id="mensajeError" class="error"></p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="container" id="contenido" style="display:none;">
     <img src="img/logo.png" alt="Logo Accesoa" class="logo-panel" />
     <h2>CALCULADORA DE PANELES</h2>
 
@@ -263,10 +317,10 @@
       setCarrusel(imagenesCarrusel[indiceActual]);
     });
 
-    // Formateador en estilo argentino con "U$D"
-function fmtUSD(valor) {
-   return `U$D\u00A0${valor.toFixed(2)}`;
-}
+    function fmtUSD(valor) {
+      return `U$D\u00A0${valor.toFixed(2)}`;
+    }
+
     function calcular() {
       const panel = document.getElementById('panel').value;
       const alto = parseFloat(document.getElementById('alto').value);
@@ -300,27 +354,21 @@ function fmtUSD(valor) {
       const precioTotal = tirasTotales * cfg.price;
 
       document.getElementById('resultado').innerHTML = `
-      <div class="panel-header">
-  <span class="panel-titulo">Panel</span>
-  <span class="panel-nombre">${panel}</span>
-</div>
-
+        <div class="panel-header">
+          <span class="panel-titulo">Panel</span>
+          <span class="panel-nombre">${panel}</span>
+        </div>
         <div class="stat total">
           <span class="stat__label">Total tiras</span>
           <span class="stat__value">${tirasTotales}</span>
         </div>
-
         <div class="stat valor">
           <span class="stat__label">Valor</span>
-          <span class="stat__value">${fmtUSD(precioTotal)}
-</span>
+          <span class="stat__value">${fmtUSD(precioTotal)}</span>
         </div>
-
         <div class="superficie">Superficie: <strong>${(alto * ancho).toFixed(2)} m²</strong></div>
-
         <div class="divider"></div>
         <div class="subtitulo">Datos adicionales</div>
-
         <div class="dato">
           <span class="dato__label">Tiras verticales</span>
           <span class="dato__value">${tirasVerticales}</span>
@@ -342,15 +390,18 @@ function fmtUSD(valor) {
 
     // init
     setCarrusel(imagenesCarrusel[indiceActual]);
-  </script>
-  <script>
-  window.onload = function () {
-    let clave = prompt("Ingresá la clave para acceder:");
-    if (clave !== "2003") {
-      alert("Ingresa un código válido, contactate con tu vendedor.");
-      document.body.innerHTML = ""; // borra el contenido de la página
+
+    // 🔒 función clave
+    function verificarClave() {
+      const clave = document.getElementById("claveInput").value;
+      if (clave === "2003") {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("contenido").style.display = "flex";
+      } else {
+        document.getElementById("mensajeError").textContent =
+          "Clave incorrecta. Contactate con tu vendedor.";
+      }
     }
-  };
-</script>
+  </script>
 </body>
 </html>
