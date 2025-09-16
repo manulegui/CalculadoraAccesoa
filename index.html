@@ -323,9 +323,13 @@
 
     function calcular() {
       const panel = document.getElementById('panel').value;
-      const alto = parseFloat(document.getElementById('alto').value);
-      const ancho = parseFloat(document.getElementById('ancho').value);
+      function obtenerValor(id) {
+  const valor = document.getElementById(id).value.trim();
+  return parseFloat(valor.replace(",", "."));
+}
 
+const alto = obtenerValor('alto');
+const ancho = obtenerValor('ancho');
       if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
         document.getElementById('resultado').textContent = "Por favor ingresá valores válidos.";
         return;
